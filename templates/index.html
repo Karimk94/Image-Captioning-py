@@ -3,59 +3,40 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Image Captioner</title>
+    <title>AI Object Detector</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
     <div class="container">
         <header>
-            <h1>AI Image Captioner</h1>
-            <p>Upload an image or provide a URL to get an AI-generated caption.</p>
+            <h1>AI Object Detector</h1>
+            <p>Upload an image to identify objects within it.</p>
         </header>
 
         <main>
             <div class="form-container">
-                <form id="caption-form" enctype="multipart/form-data">
+                <form id="detection-form" enctype="multipart/form-data">
                     <div class="input-group">
                         <label for="image_file">Upload an Image</label>
-                        <input type="file" id="image_file" name="image_file" accept="image/*">
+                        <input type="file" id="image_file" name="image_file" accept="image/*" required>
                     </div>
-
-                    <div class="separator">
-                        <span>OR</span>
-                    </div>
-
-                    <div class="input-group">
-                        <label for="image_url">Provide an Image URL</label>
-                        <input type="url" id="image_url" name="image_url" placeholder="https://example.com/image.jpg">
-                    </div>
-
-                    <button type="submit" class="submit-btn">Generate Caption</button>
+                    <button type="submit" class="submit-btn">Detect Objects</button>
                 </form>
             </div>
 
             <div id="result-container" class="hidden">
-                <h2>Generated Caption</h2>
+                <h2>Detection Result</h2>
                 <div id="image-preview-container">
-                    <img id="image-preview" src="#" alt="Image Preview"/>
-                </div>
-                <div id="caption-output">
-                    <p>Loading...</p>
+                    <!-- This will now show the processed image -->
+                    <img id="result-image" src="#" alt="Detection Result"/>
                 </div>
             </div>
              <div id="error-container" class="hidden">
                 <p id="error-message"></p>
             </div>
         </main>
-
-        <footer>
-            <p>Powered by Flask & Hugging Face Transformers</p>
-        </footer>
     </div>
-
     <script src="{{ url_for('static', filename='js/script.js') }}"></script>
 </body>
 </html>
