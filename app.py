@@ -1,7 +1,9 @@
-from flask import Flask, render_template, request, jsonify
 import os
+os.environ['TIMM_OFFLINE'] = '1'
+
+from flask import Flask, render_template, request, jsonify
 from werkzeug.utils import secure_filename
-from image_processor import processor_instance # Import the new processor
+from image_processor import processor_instance
 
 # Initialize the Flask application
 app = Flask(__name__)
@@ -48,5 +50,4 @@ def process_image_route():
              os.remove(filepath)
 
 if __name__ == '__main__':
-    # Run on port 5001 to avoid conflict
     app.run(port=5001, debug=False)
