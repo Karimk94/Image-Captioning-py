@@ -1,5 +1,3 @@
-# image_processor.py
-
 from transformers import pipeline, BlipProcessor, BlipForConditionalGeneration, AutoImageProcessor, AutoModelForObjectDetection
 from PIL import Image, ImageDraw, ImageFont
 import requests
