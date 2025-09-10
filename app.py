@@ -1,6 +1,6 @@
 import os
 os.environ['TIMM_OFFLINE'] = '1'
-
+import uuid
 from flask import Flask, render_template, request, jsonify
 from werkzeug.utils import secure_filename
 from image_processor import processor_instance
@@ -48,6 +48,36 @@ def process_image_route():
     finally:
         if os.path.exists(filepath):
              os.remove(filepath)
+
+@app.route('/process_image_stream', methods=['POST'])
+def process_image_stream():
+    """
+    New endpoint to process a single image sent as a raw byte stream.
+    """
+    filepath = None
+    try:
+        image_bytes = request.get_data()
+        if not image_bytes:
+            return jsonify({'error': 'No image data in request body'}), 400
+
+        temp_filename = f"{str(uuid.uuid4())}.jpg"
+        filepath = os.path.join(app.config['UPLOAD_FOLDER'], temp_filename)
+        with open(filepath, 'wb') as f:
+            f.write(image_bytes)
+
+        result = processor_instance.process_image(filepath)
+        if result:
+            return jsonify(result)
+        else:
+            return jsonify({'error': 'Failed to process image from stream.'}), 500
+            
+    except Exception as e:
+        print(f"Error in Flask stream route: {e}")
+        return jsonify({'error': 'Failed to process image from stream.'}), 500
+    finally:
+        if filepath and os.path.exists(filepath):
+            os.remove(filepath)
+
 
 if __name__ == '__main__':
     app.run(port=5001, debug=False)
