@@ -5,6 +5,7 @@ import io
 import base64
 import logging
 import torch
+import re
 
 class ImageProcessor:
     """
@@ -33,6 +34,16 @@ class ImageProcessor:
         )
         print("Image Captioner initialized.")
 
+    def _clean_repeated_words(self, text):
+        """Removes consecutive repeated words from a string."""
+        if not text:
+            return ""
+        # Use regex to find all occurrences of a word boundary followed by a word,
+        # then that same word repeated one or more times, and replace it with a single instance.
+        # This handles punctuation correctly by capturing the word and its trailing space/punctuation.
+        pattern = re.compile(r'\b(\w+)(?:\s+\1\b)+', re.IGNORECASE)
+        return pattern.sub(r'\1', text)
+    
     def process_image(self, image_path_or_url):
         """
         Performs both object detection and captioning on an image.
@@ -79,8 +90,8 @@ class ImageProcessor:
             logging.info("Generating a natural, unconditional caption...")
             caption_inputs = self.caption_processor(raw_image, return_tensors="pt")
             caption_out = self.caption_model.generate(**caption_inputs)
-            base_caption = self.caption_processor.decode(caption_out[0], skip_special_tokens=True)
-
+            raw_caption = self.caption_processor.decode(caption_out[0], skip_special_tokens=True)
+            base_caption = self._clean_repeated_words(raw_caption)
             # --- 3. Enrich the Caption with Missing Tags ---
             final_caption = base_caption
             missing_tags = []

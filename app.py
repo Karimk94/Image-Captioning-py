@@ -4,6 +4,7 @@ import uuid
 from flask import Flask, render_template, request, jsonify
 from werkzeug.utils import secure_filename
 from image_processor import processor_instance
+from werkzeug.serving import run_simple
 
 # Initialize the Flask application
 app = Flask(__name__)
@@ -80,4 +81,12 @@ def process_image_stream():
 
 
 if __name__ == '__main__':
-    app.run(port=5001, debug=False)
+    run_simple(
+        '127.0.0.1',
+        5001,
+        app,
+        use_reloader=False,
+        use_debugger=True,
+        threaded=True,
+        exclude_patterns=[ '*__pycache__*', '*uploads*']
+    )
