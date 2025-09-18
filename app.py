@@ -4,7 +4,7 @@ import uuid
 from flask import Flask, render_template, request, jsonify
 from werkzeug.utils import secure_filename
 from image_processor import processor_instance
-from werkzeug.serving import run_simple
+from waitress import serve
 
 # Initialize the Flask application
 app = Flask(__name__)
@@ -79,14 +79,5 @@ def process_image_stream():
         if filepath and os.path.exists(filepath):
             os.remove(filepath)
 
-
 if __name__ == '__main__':
-    run_simple(
-        '127.0.0.1',
-        5001,
-        app,
-        use_reloader=False,
-        use_debugger=True,
-        threaded=True,
-        exclude_patterns=[ '*__pycache__*', '*uploads*']
-    )
+    serve(app, host='127.0.0.1', port=5001, threads=100)
