@@ -1,7 +1,5 @@
 Flask
-transformers
-torch
-pillow
 requests
-timm
 waitress
+python-dotenv
+Pillow

@@ -3,36 +3,53 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Object Detector</title>
+    <title>AI Image Analyzer</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
     <div class="container">
         <header>
-            <h1>AI Object Detector</h1>
-            <p>Upload an image to identify objects within it.</p>
+            <h1>AI Image Analyzer</h1>
+            <p>Upload an image to generate a caption and tags using a local LLM.</p>
         </header>
 
         <main>
             <div class="form-container">
-                <form id="detection-form" enctype="multipart/form-data">
+                <form id="analysis-form" enctype="multipart/form-data">
                     <div class="input-group">
                         <label for="image_file">Upload an Image</label>
                         <input type="file" id="image_file" name="image_file" accept="image/*" required>
                     </div>
-                    <button type="submit" class="submit-btn">Detect Objects</button>
+                    <button type="submit" class="submit-btn">Analyze Image</button>
                 </form>
             </div>
 
+            <!-- This container will show the results -->
             <div id="result-container" class="hidden">
-                <h2>Detection Result</h2>
+                <h2>Analysis Result</h2>
                 <div id="image-preview-container">
-                    <!-- This will now show the processed image -->
-                    <img id="result-image" src="#" alt="Detection Result"/>
+                    <!-- This will show the original uploaded image -->
+                    <img id="result-image" src="#" alt="Analyzed Image"/>
+                </div>
+                
+                <!-- New section for the caption -->
+                <div id="caption-container" class="result-section">
+                    <h3>Generated Caption</h3>
+                    <p id="caption-output"></p>
+                </div>
+
+                <!-- New section for tags -->
+                <div id="tags-container" class="result-section">
+                    <h3>Detected Tags</h3>
+                    <div id="tags-output">
+                        <!-- Tags will be injected here by JavaScript -->
+                    </div>
                 </div>
             </div>
-             <div id="error-container" class="hidden">
+            
+            <!-- Error message container -->
+            <div id="error-container" class="hidden">
                 <p id="error-message"></p>
             </div>
         </main>
