@@ -31,12 +31,11 @@ class OllamaVisionProcessor:
         """
         encoded_image = base64.b64encode(image_bytes).decode('utf-8')
 
-        # This prompt instructs the model to return a structured JSON object.
         prompt = """
-        Analyze the following image and respond with a single JSON object.
+        Analyze the image and respond with a single JSON object.
         The JSON object must contain two keys:
-        1. "caption": A concise, single-sentence description of the scene.
-        2. "tags": A JSON array of 5-10 single-word or two-word strings that are relevant tags for the image.
+        1. "caption": A brief description of the main social interaction and location. Focus on the general activity (e.g., "people discussing in a meeting room"). Do NOT describe clothing, colors, or specific details like eating or drinking.
+        2. "tags": A JSON array of 5-10 key concepts related to the setting and activity.
         """
 
         print(f"Sending request to Ollama model: {OLLAMA_MODEL}...")
